@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerador de Orçamento</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Gerador de Orçamento</h2>
+        <form id="orcamentoForm" class="card p-4">
+            <div class="mb-3">
+                <label for="nome_cliente" class="form-label">Nome do Cliente:</label>
+                <input type="text" class="form-control" id="nome_cliente" required>
+            </div>
+            <div class="mb-3">
+                <label for="servico" class="form-label">O que vai ser feito:</label>
+                <input type="text" class="form-control" id="servico" required>
+            </div>
+            <div class="mb-3">
+                <label for="mao_de_obra" class="form-label">Valor da Mão de Obra (R$):</label>
+                <input type="number" step="0.01" class="form-control" id="mao_de_obra" value="100" required>
+            </div>
+            <div class="mb-3">
+                <label for="modelo_aparelho" class="form-label">Modelo do Aparelho:</label>
+                <input type="text" class="form-control" id="modelo_aparelho" required>
+            </div>
+            <div class="mb-3">
+                <label for="valor_dolar" class="form-label">Valor em Dólar da Peça:</label>
+                <input type="number" step="0.01" class="form-control" id="valor_dolar" required>
+            </div>
+            <div class="mb-3">
+                <label for="cotacao_dolar" class="form-label">Cotação Atual do Dólar (BRL):</label>
+                <input type="number" step="0.01" class="form-control" id="cotacao_dolar" required value="5.85">
+                <iframe width="100%" height="300" src="https://www.cambioschaco.com.py/widgets/cotizacion/?lang=pt" frameborder="0" class="mt-2"></iframe>
+            </div>
+            <div class="mb-3">
+                <label for="frete" class="form-label">Frete (opcional):</label>
+                <select class="form-select" id="frete">
+                    <option value="0">Sem frete</option>
+                    <option value="40">R$ 40</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Gerar Orçamento</button>
+        </form>
+
+        <div class="orcamento card p-4 mt-4" id="resultado" style="display:none;">
+            <pre id="mensagem" class="mb-3"></pre>
+            <button id="copiar" class="btn btn-secondary">Copiar Texto</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
