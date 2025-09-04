@@ -161,6 +161,17 @@ body {
     transition: var(--transition);
     -webkit-appearance: none;
     appearance: none;
+    min-height: 44px;
+    box-sizing: border-box;
+}
+
+.form-select {
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px 12px;
+    padding-right: 40px;
+    cursor: pointer;
 }
 
 .form-input:focus,
@@ -172,6 +183,11 @@ body {
 
 .form-input:invalid {
     border-color: #ef4444;
+}
+
+.form-select option {
+    padding: 8px 12px;
+    font-size: 16px;
 }
 
 .form-help {
@@ -734,6 +750,34 @@ body {
         padding: 12px;
     }
 }
+    
+    .cotacao-input-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .btn-update {
+        width: 100%;
+        margin-top: 8px;
+    }
+    
+    .cotacao-status {
+        text-align: center;
+    }
+@media (max-width: 576px) {
+    .container {
+        padding: 15px;
+    }
+    
+    .btn-outline {
+        margin-top: 8px;
+        width: 100%;
+    }
+    
+    .cotacao-widget {
+        margin-top: 12px;
+        padding: 12px;
+    }
     
     .cotacao-input-group {
         flex-direction: column;
