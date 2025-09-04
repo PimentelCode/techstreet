@@ -2,57 +2,110 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Gerador de Orçamento</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gerador de orçamentos rápido e fácil para serviços técnicos">
+    <title>Gerador de Orçamento - Rápido e Fácil</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container mt-5">
-        <h2 class="text-center mb-4">Gerador de Orçamento</h2>
-        <form id="orcamentoForm" class="card p-4">
-            <div class="mb-3">
-                <label for="nome_cliente" class="form-label">Nome do Cliente:</label>
-                <input type="text" class="form-control" id="nome_cliente" required>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <p>Carregando...</p>
+    </div>
+    
+    <main class="container">
+        <header class="header">
+            <h1 class="title">Gerador de Orçamento</h1>
+            <p class="subtitle">Crie orçamentos profissionais em segundos</p>
+        </header>
+        
+        <form id="orcamentoForm" class="form-card" role="form" aria-label="Formulário de geração de orçamento">
+            <div class="form-group">
+                <label for="nome_cliente" class="form-label">Nome do Cliente</label>
+                <input type="text" class="form-input" id="nome_cliente" required aria-describedby="nome-help">
+                <small id="nome-help" class="form-help">Digite o nome completo do cliente</small>
             </div>
-            <div class="mb-3">
-                <label for="servico" class="form-label">O que vai ser feito:</label>
-                <input type="text" class="form-control" id="servico" required>
+            
+            <div class="form-group">
+                <label for="servico" class="form-label">Serviço a ser realizado</label>
+                <input type="text" class="form-input" id="servico" required aria-describedby="servico-help">
+                <small id="servico-help" class="form-help">Descreva brevemente o serviço</small>
             </div>
-            <div class="mb-3">
-                <label for="mao_de_obra" class="form-label">Valor da Mão de Obra (R$):</label>
-                <input type="number" step="0.01" class="form-control" id="mao_de_obra" value="100" required>
+            
+            <div class="form-group">
+                <label for="modelo_aparelho" class="form-label">Modelo do Aparelho</label>
+                <input type="text" class="form-input" id="modelo_aparelho" required aria-describedby="modelo-help">
+                <small id="modelo-help" class="form-help">Ex: iPhone 12, Samsung Galaxy S21</small>
             </div>
-            <div class="mb-3">
-                <label for="modelo_aparelho" class="form-label">Modelo do Aparelho:</label>
-                <input type="text" class="form-control" id="modelo_aparelho" required>
+            
+            <div class="form-group">
+                <label for="valor_dolar" class="form-label">Valor da Peça (USD)</label>
+                <input type="number" step="0.01" class="form-input" id="valor_dolar" required aria-describedby="valor-help">
+                <small id="valor-help" class="form-help">Valor em dólares americanos</small>
             </div>
-            <div class="mb-3">
-                <label for="valor_dolar" class="form-label">Valor em Dólar da Peça:</label>
-                <input type="number" step="0.01" class="form-control" id="valor_dolar" required>
+            
+            <div class="form-group">
+                <label for="mao_de_obra" class="form-label">Mão de Obra (R$)</label>
+                <input type="number" step="0.01" class="form-input" id="mao_de_obra" value="100" required aria-describedby="mao-help">
+                <small id="mao-help" class="form-help">Valor do serviço em reais</small>
             </div>
-            <div class="mb-3">
-                <label for="cotacao_dolar" class="form-label">Cotação Atual do Dólar (BRL):</label>
-                <input type="number" step="0.01" class="form-control" id="cotacao_dolar" required value="5.85">
-                <iframe width="100%" height="300" src="https://www.cambioschaco.com.py/widgets/cotizacion/?lang=pt" frameborder="0" class="mt-2"></iframe>
+            <div class="form-group">
+                <label for="cotacao_dolar" class="form-label">Cotação do Dólar (R$)</label>
+                <input type="number" step="0.01" class="form-input" id="cotacao_dolar" required value="5.85" aria-describedby="cotacao-help">
+                <small id="cotacao-help" class="form-help">Cotação atual será carregada automaticamente</small>
+                <button type="button" class="btn-secondary" id="toggleCotacao" aria-expanded="false" aria-controls="cotacaoWidget">
+                    Ver Cotação Atual
+                </button>
+                <div id="cotacaoWidget" class="cotacao-widget" style="display: none;">
+                    <div class="widget-loader" id="widgetLoader">
+                        <div class="spinner-small"></div>
+                        <span>Carregando cotação...</span>
+                    </div>
+                    <iframe width="100%" height="300" data-src="https://www.cambioschaco.com.py/widgets/cotizacao/?lang=pt" frameborder="0" class="cotacao-iframe" loading="lazy" title="Widget de cotação do dólar"></iframe>
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="frete" class="form-label">Frete (opcional):</label>
-                <select class="form-select" id="frete">
-                    <option value="0">Sem frete</option>
-                    <option value="40">R$ 40</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary w-100">Gerar Orçamento</button>
+            
+            <details class="form-details">
+                <summary class="form-summary">Opções Avançadas</summary>
+                <div class="form-group">
+                    <label for="frete" class="form-label">Frete</label>
+                    <select class="form-select" id="frete" aria-describedby="frete-help">
+                        <option value="0">Sem frete</option>
+                        <option value="40">R$ 40,00</option>
+                    </select>
+                    <small id="frete-help" class="form-help">Adicione o custo do frete se aplicável</small>
+                </div>
+            </details>
+            
+            <button type="submit" class="btn-primary" id="submitBtn">
+                <span class="btn-text">Gerar Orçamento</span>
+                <span class="btn-loader" style="display: none;">
+                    <div class="spinner-small"></div>
+                </span>
+            </button>
         </form>
 
-        <div class="orcamento card p-4 mt-4" id="resultado" style="display:none;">
-            <pre id="mensagem" class="mb-3"></pre>
-            <button id="copiar" class="btn btn-secondary">Copiar Texto</button>
-        </div>
-    </div>
+        <section class="result-card" id="resultado" style="display:none;" role="region" aria-label="Resultado do orçamento">
+            <h2 class="result-title">Seu Orçamento</h2>
+            <div class="result-content">
+                <pre id="mensagem" class="result-text" aria-live="polite"></pre>
+            </div>
+            <div class="result-actions">
+                <button id="copiar" class="btn-secondary" aria-describedby="copy-help">
+                    <span class="btn-text">Copiar Texto</span>
+                    <span class="btn-success" style="display: none;">✓ Copiado!</span>
+                </button>
+                <button id="novoOrcamento" class="btn-outline">
+                    Novo Orçamento
+                </button>
+                <small id="copy-help" class="form-help">Clique para copiar o orçamento</small>
+            </div>
+        </section>
+    </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
